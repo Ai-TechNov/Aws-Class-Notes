@@ -1,0 +1,58 @@
+What is Cloud Computing ?
+
+- Cloud computing is the on-demand availability of computer system resources, especially data storage and computing power, without direct active management by the user. Large clouds often have functions distributed over multiple locations, each of which is a data center
+
+Cloud Service Providers
+
+- A cloud service provider, or CSP, is an IT company that provides on-demand, scalable computing resources like computing power, data storage, or applications over the internet. Typically, cloud-based service models are defined as IaaS (infrastructure as a service), PaaS (platform as a service), or SaaS (software as a service).
+
+AWS - Amazon Web Services
+
+Datacenters 
+
+- A data center is a physical room, building or facility that houses IT infrastructure for building, running and delivering applications and services. It also stores and manages the data associated with those applications and services.
+
+Data centers started out as privately owned, tightly controlled on-premises facilities housing traditional IT infrastructure for the exclusive use of one company. Recently, they've evolved into remote facilities or networks of facilities owned by cloud service providers (CSPs). These CSP data centers house virtualized IT infrastructure for the shared use of multiple companies and customers.
+
+
+Virtualisation
+
+- Virtualization is technology that you can use to create virtual representations of servers, storage, networks, and other physical machines. Virtual software mimics the functions of physical hardware to run multiple virtual machines simultaneously on a single physical machine.
+
+
+Hypervisor
+
+- A hypervisor is a software that you can use to run multiple virtual machines on a single physical machine. Every virtual machine has its own operating system and applications. The hypervisor allocates the underlying physical computing resources such as CPU and memory to individual virtual machines as required.
+
+
+Cloud Service Models
+
+- IAAS - Infra As a Service
+- PAAS - Platform As a Service
+- SAAS - Software As a Service 
+
+
+IAAS 
+
+- IaaS in cloud computing is when you rent access to cloud infrastructure resources as individual services from a cloud service provider (CSP), including servers, virtual machines, networking resources, and storage. IaaS helps eliminate much of the complexity and costs associated with building and maintaining physical infrastructure in an on-premises data center.  
+
+The CSP is responsible for managing and maintaining the infrastructure, so you can concentrate on installing, configuring, and managing software and keeping your data secure. IaaS providers also offer additional services, such as detailed billing management, logging, monitoring, storage resiliency, and security. 
+
+You can access IaaS resources using a pay-as-you-go basis, allowing you to only pay to consume the resources that you need. In other words, you can easily increase or decrease resources, allowing you to pay less when needed or instantly provision and scale out resources to meet new demand.
+
+PAAS 
+
+- Platform as a service (PaaS) is a complete development and deployment environment in the cloud, with resources that enable you to deliver everything from simple cloud-based apps to sophisticated, cloud-enabled enterprise applications. You purchase the resources you need from a cloud service provider on a pay-as-you-go basis and access them over a secure Internet connection.
+
+Like IaaS, PaaS includes infrastructure—servers, storage, and networking—but also middleware, development tools, business intelligence (BI) services, database management systems, and more. PaaS is designed to support the complete web application lifecycle: building, testing, deploying, managing, and updating.
+
+PaaS allows you to avoid the expense and complexity of buying and managing software licenses, the underlying application infrastructure and middleware, container orchestrators such as Kubernetes, or the development tools and other resources. You manage the applications and services you develop, and the cloud service provider typically manages everything else.
+
+SAAS 
+
+- Software as a service (SaaS) allows users to connect to and use cloud-based apps over the Internet. Common examples are email, calendaring, and office tools (such as Microsoft Office 365).
+
+SaaS provides a complete software solution that you purchase on a pay-as-you-go basis from a cloud service provider. You rent the use of an app for your organization, and your users connect to it over the Internet, usually with a web browser. All of the underlying infrastructure, middleware, app software, and app data are located in the service provider’s data center. The service provider manages the hardware and software, and with the appropriate service agreement, will ensure the availability and the security of the app and your data as well. SaaS allows your organization to get quickly up and running with an app at minimal upfront cost.
+
+
+
