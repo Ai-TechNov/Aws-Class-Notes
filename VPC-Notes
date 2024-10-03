@@ -1,0 +1,67 @@
+VPC - Virtual Private Cloud
+
+With Amazon Virtual Private Cloud (Amazon VPC), you can launch AWS resources in a logically isolated virtual network that you've defined.
+This virtual network closely resembles a traditional network that you'd operate in your own data center, with the benefits of using the scalable infrastructure of AWS.
+
+LAB
+
+Create VPC
+Name - Demo-Vpc
+CIDR - 10.0.0.0/16
+create
+
+Internet-Gateway
+
+An internet gateway is a horizontally scaled, redundant, and highly available VPC component that allows communication between your VPC and the internet.
+It supports IPv4 and IPv6 traffic. It does not cause availability risks or bandwidth constraints on your network traffic.
+
+LAB
+
+Create IGW
+Attach Gateway
+Actions
+Attach Gateway 
+Select VPC - Attach
+
+Subnets
+
+A subnet, or subnetwork, is a network inside a network.
+Subnets make networks more efficient. Through subnetting,
+network traffic can travel a shorter distance without passing through unnecessary routers to reach its destination.
+
+LAB 
+
+Create SUbnet
+Select VPC
+Name - Pub-Subnet
+CIDR- 10.0.0.0/20
+create
+
+Create Subnet
+Select VPC
+Name - Pvt-Subnet
+CIDR - 10.0.16.0/20
+create
+
+Route-tables
+
+A route table contains a set of rules, called routes, that determine where network traffic from your subnet or gateway is directed.
+
+LAB
+
+Create Route tables
+
+Create Pub-Rt
+Name - Pub-Rt
+Subnet Ass - Attach Pub-Sub
+Routes - Attach IGW - 0.0.0.0/0
+
+Create Pvt-Rt
+Name - Pvt-Rt
+Subnet Ass - Attach Pvt-Sub
+Routes - No Routes #Only local route
+
+
+
+
+
