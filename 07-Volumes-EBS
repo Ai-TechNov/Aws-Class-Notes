@@ -1,0 +1,192 @@
+EBS - Elastic Block Storage
+
+EBS is a block type durable and persistent storage that can be attached to EC2 instances for additional storage. 
+Unlike EC2 instance storage volumes which are suitable for holding temporary data EBS volumes are highly suitable for essential and long term data.
+EBS volumes are specific to availability zones and can only be attached to instances within the same availability zone. 
+
+EBS can be created from the EC2 dashboard in the console as well as in Step 4 of the EC2 launch.
+Just note that when creating EBS with EC2, the EBS volumes are created in the same availability zone as EC2,
+however when provisioned independently users can choose the AZ in which EBS is required.
+
+
+Features of EBS:
+
+Scalability: EBS volume sizes and features can be scaled as per the needs of the system. This can be done in two ways:
+Take a snapshot of the volume and create a new volume using the Snapshot with new updated features.
+Updating the existing EBS volume from the console.
+
+Backup: Users can create snapshots of EBS volumes that act as backups.
+
+Snapshot can be created manually at any point in time or can be scheduled.
+Snapshots are stored on AWS S3 and are charged according to the S3 storage charges.
+Snapshots are incremental in nature.
+
+New volumes across regions can be created from snapshots.
+
+Encryption: Encryption can be a basic requirement when it comes to storage. 
+This can be due to the government of regulatory compliance. EBS offers an AWS managed encryption feature.
+Users can enable encryption when creating EBS volumes by clicking on a checkbox.
+Encryption Keys are managed by the Key Management Service (KMS) provided by AWS.
+Encrypted volumes can only be attached to selected instance types.
+Encryption uses the AES-256 algorithm.
+Snapshots from encrypted volumes are encrypted and similarly, volumes created from snapshots are encrypted.
+
+Charges: Unlike AWS S3, where you are charged for the storage you consume, AWS charges users for the storage you hold. 
+For example if you use 1 GB storage in a 5 GB volume, you’d still be charged for a 5 GB EBS volume.
+EBS charges vary from region to region.
+EBS Volumes are independent of the EC2 instance they are attached to. The data in an EBS volume will remain unchanged even if the instance is rebooted or terminated.
+Single EBS volume can only be attached to one EC2 instance at a time. However, one EC2 can have more than one EBS volumes attached to it.
+
+EBS volumes are specific to availability zones and can only be attached to EC2 in the same availability zone. 
+In case AWS’ availability zone is to go down, access to the EBS volume will be lost.
+Can be used for rapidly changing data that needs good I/Ops.
+As compared to EC2 instance storage the control over data and flexibility offered by EBS is far greater.
+To provide durability, EBS volumes are replicated in their availability zone but are limited to one availability zone.
+
+Types of EBS Volumes:
+
+SSD: This storage type is suitable for small chunks of data that requires fast I/Ops. SSDs can be used as root volumes for EC2 instances.
+
+General Purpose SSD (GP2)
+
+Offers a single-digit millisecond latency.
+Can provide 3000 IOps burst.
+IOps speed is limited from 3-10000 IOps.
+The throughput of these volumes is 128MBPS up to 170GB. After which throughput increases 768KBPS per GB and peaks at 160MBPS.
+
+Provisioned IOPS SSD (IO1)
+
+These SSDs are IO intensive.
+Users can specify IOPS requirement during creation.
+Size limit is 4TB-16TB
+According to AWS claims “These volumes, if attached to EBS optimized instances will deliver IOPS defined within 10% 99.9% times of the year”
+Max IOPS speed is 20000.
+HDD: This storage type is suitable for Big Data chunks and slower processing. These volumes cannot be used as root volumes for EC2. AWS claims that “These volumes provide expected throughput 99.9% times of the year”
+
+Cold HDD (SC1)
+
+SC1 is the cheapest of all EBS volume types. It is suitable for large, infrequently accessed data.
+Max Burst speed offered is 250 Mbps
+
+Throughput optimized HDD (ST)
+
+Suitable for large, frequently accessed data.
+Burst speed ranges from 250 MBPS to 500 MBPS.
+
+LAB
+
+Create EC2
+OS - linux
+Storage - Add 5gb EBS
+Launch
+
+#Connect to Ec2 and configure Additional storage
+
+ssh ec2
+
+#to check storage
+df -h   
+
+#to list addon storage
+lsblk
+
+#format add on storage
+sudo mkfs -t ext4 /dev/avdb
+
+#create mount point
+sudo mkdir /app-data
+
+#mount vol to folder
+sudo mount /dev/xvdb /app-data
+
+#Change ownership of folder
+sudo chown ec2-user:ec2-user /app-data
+
+#create any file under /app-data
+#Now, we will transfer the storage to A different VM in Same Zone
+
+#umoun the volume
+sudo umount /dev/xvdb
+
+#Dettach from the Volumes
+Go to EBS
+Volumes
+Select Volume 
+Detach Volume
+
+#Create a VM in the Same AZ 
+
+Launch Ec2
+VPC - Default
+AZ - 1a
+Storage - 8gb
+
+#Now, Attach the vol to the new VM
+# Go to EBS
+
+select volume
+Attach Volume
+Az - 1a
+Select Ec2
+Attach
+
+#Once the Volume is attached, Create a folder and mount the volume
+sudo mkdir /app-vol
+sudo mount /dev/xvdb /app-vol
+
+#Once the vol is mounted, we can access the data. That is stored on the new volume
+
+#We should Transfer the Volume to a Different AZ
+#To do so, We need to create a SNAPSHOT of the Volume
+
+SNAPSHOT 
+
+EBS Snapshots are point-in-time images or copies of your EBS Volume. 
+These are stored on S3, which can be accessed through Elastic Cloud Computing APIs or AWS Console.
+While EBS volumes are availability zone (AZ’s) specific but, Snapshots are Region-specific. 
+Your Snapshot size must be either same or larger than the size of the original volume from which the snapshot is taken. 
+As per Amazon, each AWS account can have a maximum of up to 5000 images or copies Volumes and up to 10,000 EBS Snapshots created. 
+A snapshot, when created, shows a ‘pending ‘ status, which then converts into ‘complete’ once the snapshot creation is successful.
+
+
+LAB
+
+#Create Snapshot From Volume
+
+Select the Volume
+Actions
+Create Snapshot
+Name - EBS-SNap
+Create
+
+#Once the Snapshot is ready
+#We can create a NEw-Vol from the Snap-Shot, in our desired AZ.
+#We can also copy Snapshots from one region to another region. 
+
+Go to snapshot
+Actions
+Create Volume
+Select Size
+Select Az
+Create Volume
+
+#Once the new volume is created in new AZ, we can attach the volume to the ec2 in new-az
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
