@@ -1,0 +1,47 @@
+Deploy Application on Ec2 Using Httpd as Web-Server
+
+#Create an Ec2 instance, Install and Setup httpd. Clone code from github
+
+Web-Server
+
+HTTPd stands for Hypertext Transfer Protocol daemon. 
+It usually is the main software part of an HTTP server better known as a web server.
+Some commonly used implementations are: Apache HTTP Server.
+
+Httpd - Config - Settings
+
+Port - 80
+Server root - /etc/httpd
+config path - /etc/httpd/config/httpd.conf
+Doc root - /var/www/html
+
+LAB
+
+Create EC2 
+OS - Linux/Centos/Ubuntu
+SG - ssh-22 / httpd - 80
+Storage - default
+Launch
+
+#Connect to Ec2
+ssh -i pem-file ec2-user@public-ip
+
+#Setup Web-Server
+sudo yum -y install httpd
+
+#start and enable web-server
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+#install git
+sudo yum -y install git
+
+#clone code
+sudo git clone httpd://github.com/ai-technov/ecomm.git /var/www/html
+
+#WITH THIS We deployed our web-app on the EC2
+
+
+
+
+
