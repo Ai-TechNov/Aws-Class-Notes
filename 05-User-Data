@@ -1,0 +1,29 @@
+#Launch Multiple servers with similar config 
+
+USER DATA
+
+When you launch an Amazon EC2 instance, 
+you can pass user data to the instance that is used to perform automated configuration tasks,
+or to run scripts after the instance starts.
+
+LAB
+
+Create Ec2
+OS - Linux
+SG - ssh / httpd
+Advanced details
+
+User-Data
+
+#Enter the commands that you want to execute during system launch
+
+#!/bin/bash
+sudo yum -y install git
+sudo yum -y install httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudp git clone <URL> /var/www/html/
+
+#Once you launch the Ec2, the ec2 will perform all the steps that are provided in userdata feild, while the system is being launched.
+
+
