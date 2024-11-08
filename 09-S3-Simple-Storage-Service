@@ -1,0 +1,197 @@
+S3 - Simple Storage Service 
+
+- Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, 
+data availability, security, and performance. You can use Amazon S3 to store and retrieve any amount of data at any time, from anywhere.
+
+S3 Components
+
+- Buckets
+- Objects
+- Bucket Settings
+- ACL Settings
+- Versioning
+- Static Web Hosting with S3
+- Replications
+- Life Cycle policies
+- AWS - Transfer Family // SFTP 
+- AWS - Storage Gateway
+- AWS - DataSync
+
+
+Create Bucket
+
+- Every object in S3 is stored in a bucket. To upload files and folders to S3, you’ll need to create a bucket where the objects will be stored.
+- Bucket Name should be globally unique
+
+Name - Aja-devops
+ACLs - Disabled
+Settings - Enabled
+Versioning - Disabled 
+Create Bucket 
+
+Object 
+
+- Objects are the fundamental entities stored in Amazon S3.
+- There is no limit for the no of objects that you can upload. 
+- The Size of each object should not exceed 5tb. 
+- We can upload any type of files - code, images, docx, videos
+
+Upload
+Select Files
+upload 
+
+
+Permissions
+
+- Bucket Settings
+  Edit
+  Block all public access - off
+
+- Object Ownership
+  Edit 
+  Enable
+
+- ACL settings
+  Edit
+  Everyone Public Acess - List // Read
+
+Select Object
+  - Actions
+  - Make public using ACL
+
+#Now, once you browse the object URL, you can access the file
+
+
+Pre-Assigned URL
+- A Pre assigned url is generated from s3, without having to modify Bucket settings or ACLS.
+which gives access to list and read the particular object for a span of 1-12 Hours
+- To generate pre-assigned url
+- select object
+- Actions
+- Share Pre-assigned url 
+
+
+Bucket Versioning
+
+Versioning is a means of keeping multiple variants of an object in the same bucket. 
+You can use versioning to preserve, retrieve, and restore every version of every object stored in your Amazon S3 bucket.
+With versioning, you can easily recover from both unintended user actions and application failures
+
+Edit
+- Enable
+
+#Make sure to turn off the Show versions switch before deleting any files.
+#If you turn on the show versions switch, it will lead to PD of files
+
+Static Web-Hosting on S3
+
+- Upload Files
+- Properties
+- Enable Static Web hosting
+- Permissions
+- Bucket Settings - off
+- Bucket policy
+  - Edit
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::Bucket-Name/*"
+            ]
+        }
+    ]
+}
+
+- Save
+
+#Once it is saved, now if we browse the s3 web hosting link, we can acess our website
+
+S3 - Replication 
+
+You can use replication to enable automatic, asynchronous copying of objects across Amazon S3 buckets.
+Buckets that are configured for object replication can be owned by the same AWS account or by different accounts.
+You can replicate objects to a single destination bucket or to multiple destination buckets. 
+The destination buckets can be in different AWS Regions or within the same Region as the source bucket.
+
+To Replicate Objects
+- Select Bucket
+- Go to MAnagement
+- Go to Replication
+- Create Replication Rule
+- Name 
+- Select Source bucket
+- select destination bucket
+- create IAM role
+- Save
+
+#Once the Job is saved, AWS will start moving the data across the buckets. 
+
+
+S3 - LifeCycle Rules 
+
+AWS S3 Lifecycle Rules are a set of policies that you can define to manage the storage class transitions
+and automatic deletion of objects in an S3 bucket. These rules can help reduce storage costs by automatically
+moving data to more cost-effective storage classes or removing data when it's no longer needed.
+
+Key Components of S3 Lifecycle Rules
+
+Transitions: Move objects between different S3 storage classes over time.
+Expiration: Automatically delete objects after a specified period.
+Noncurrent Version Expiration: Expire previous versions of objects in versioned buckets.
+Abort Incomplete Multipart Uploads: Automatically abort multipart uploads that are incomplete for a specified time.
+
+S3 Storage Classes
+
+S3 Standard: For frequently accessed data.
+S3 Intelligent-Tiering: For data with unpredictable access patterns.
+S3 Standard-IA (Infrequent Access): For infrequently accessed data.
+S3 One Zone-IA: For infrequent access data with low resilience needs.
+S3 Glacier: For archival data with retrieval times from minutes to hours.
+S3 Glacier Deep Archive: For long-term archival with retrieval times in hours.
+S3 Reduced Redundancy Storage (RRS): Deprecated and no longer recommended.
+
+Steps to Create S3 Lifecycle Rules
+
+Open the S3 Management Console.\
+
+Select the Bucket: Choose the bucket for which you want to apply lifecycle policies.
+Go to the Management Tab: Under your bucket settings, select the Management tab.
+
+Create Lifecycle Rule:
+
+Add Rule: Choose whether you want to create a new rule or modify an existing one.
+Configure the Rule: You can define conditions such as:
+Prefix (specific folders or objects)
+Tags (e.g., only objects with a specific tag)
+Object Age (e.g., older than 30 days)
+
+Set Actions:
+
+Transition Actions: Move to another storage class after a certain number of days.
+Expiration Actions: Delete objects after a certain number of days.
+Noncurrent Version Expiration: Delete older versions of objects in versioned buckets.
+Abort Multipart Uploads: Abort uploads that have been incomplete for a specified period.
+Review and Save: Review your settings and save the lifecycle rule.
+
+Example of Lifecycle Rule Scenarios
+
+1. Transition Objects to S3 Standard-IA After 30 Days
+Prefix: logs/
+Action: Move objects to S3 Standard-IA after 30 days.
+2. Delete Objects Older Than 365 Days
+Prefix: old-backups/
+Action: Expire objects older than 365 days.
+3. Archive Data to S3 Glacier After 180 Days and Delete After 365 Days
+Prefix: archive/
+
+Action:
+Transition objects to S3 Glacier after 180 days.
+Expire (delete) the objects after 365 days.
