@@ -1,0 +1,185 @@
+AWS Transfer Family is a fully managed service that enables you to securely transfer files to and from Amazon S3 and Amazon EFS 
+(Elastic File System) using traditional file transfer protocols. It supports SFTP (Secure File Transfer Protocol), 
+FTPS (File Transfer Protocol Secure), and FTP (File Transfer Protocol). 
+This service is ideal for companies that need to move large amounts of data into AWS but prefer to continue using familiar, traditional file transfer methods.
+
+With AWS Transfer Family, you can easily migrate from on-premises file servers, integrate third-party applications, 
+or set up cloud-based workflows that require file transfers.
+The service is highly scalable, secure, and integrates seamlessly with other AWS services like Amazon S3, Amazon EFS, IAM (Identity and Access Management), and CloudWatch.
+
+Key Features and Benefits
+
+Fully Managed Service:
+
+AWS manages the infrastructure and scaling for you. There is no need to manage servers or handle patching and maintenance of the transfer software.
+Multiple File Transfer Protocols:
+
+Supports SFTP, FTPS, and FTP, allowing you to choose the protocol that works best for your use case.
+
+Secure Transfers:
+
+Data in transit is encrypted using industry-standard protocols (e.g., TLS for FTPS, SSH for SFTP).
+IAM integration provides fine-grained access control to manage who can access the service and what files they can access.
+Integration with Amazon S3 and Amazon EFS:
+
+You can store your files in Amazon S3 (object storage) or Amazon EFS (file system storage), depending on your specific use case.
+Both storage solutions offer durability, scalability, and low-latency access.
+Scalable and Reliable:
+
+AWS Transfer Family scales automatically to handle the volume of file transfers and supports high availability.
+
+Audit and Monitoring:
+
+Use AWS CloudWatch to monitor file transfer activity, track logs, and generate alerts for operational insights.
+
+Identity Management:
+
+Integrates with AWS IAM (Identity and Access Management) for controlling user access, and AWS Directory Service to manage user authentication via existing corporate directories.
+Supports integration with Amazon Cognito for easier user authentication and management.
+
+Custom Workflows:
+
+Allows the use of AWS Lambda to trigger functions based on events, such as when files are uploaded or downloaded, for further automation.
+
+Endpoint Customization:
+
+You can create custom endpoint URLs (domain names) for the service, improving the experience for your users and aligning it with your branding.
+
+No Server Management:
+
+Unlike traditional file transfer servers, AWS Transfer Family is fully managed, so you don’t need to worry about patching, scaling, or high availability.
+
+Supported Protocols
+SFTP (Secure File Transfer Protocol): A secure and widely used method for transferring files, especially in environments that require high security.
+FTPS (FTP Secure): An extension to FTP that adds support for SSL/TLS encryption.
+FTP (File Transfer Protocol): A basic protocol for transferring files, although it is less secure than SFTP and FTPS.
+AWS Transfer Family Use Cases
+
+Migration of On-Premises File Servers:
+
+Easily migrate existing data stored on on-premises SFTP or FTP servers to AWS S3 or EFS.
+
+Secure File Sharing:
+
+Allow partners, customers, or internal teams to securely upload or download files via FTP/SFTP, with the files directly stored in Amazon S3 or EFS.
+
+Data Ingestion for Analytics:
+
+Move large datasets into Amazon S3 for further processing by analytics services like Amazon Athena, Amazon Redshift, or AWS Glue.
+
+Automated File Workflows:
+
+Trigger automated workflows (e.g., Lambda functions) based on file uploads or downloads. For example, automatically processing files as they arrive in S3.
+
+Managed Transfer for Applications:
+
+Use AWS Transfer Family for applications that require file transfers (e.g., media processing, healthcare data exchange, or financial applications) without the need for manual intervention.
+How AWS Transfer Family Works
+
+Create a Transfer Server:
+
+- Create Server
+- Select Protocol - SFTP
+- Identity provider - Service Managed
+- Endpoint - Public
+- Hostname - None
+- Log Group - Create new
+- Create Server
+
+#Once the Server is created create a s3 bucket
+- Go to S3
+- Create new bucket
+
+#Once the bucket is created, create IAM role to give access to this bucket. 
+- IAM - Identity and access management
+- Create Role
+- AWS service
+- Use Case - Transfer
+- Permission- S3 full access 
+- create role
+
+#Once role is created, we should generate access key and secret key.
+#Go to Windows terminal
+- ssh-keygen -f "keyname"
+
+#Once key is generated, we need to update public key on the user profile
+- Go to transfer family
+- Add user
+- Username
+- Role - IAM role
+- Policy - Node
+- Home Dir - Select your s3 bucket
+- SSH Public key - update pub key from win machine
+- Add user
+
+
+#Now to access, we need winscp
+#Download winscp from browser
+
+- open winscp
+- protocol - sftp
+- port - 22
+- HostID - Endpoint
+- Username 
+- password - node
+- Advanced 
+  - ssh
+   - AUTH 
+    - Select pvt-key-file #This will be converted to ppk
+- Connect
+
+#Now, we can exchange data from the local machine to s3 and s3 to local !!!!
+
+You start by creating a transfer server. This server can be set up to use one or more of the supported file transfer protocols (SFTP, FTP, or FTPS).
+Configure Users and Permissions:
+
+You then configure the users that will be allowed to access the service, specifying which files they can access.
+IAM roles and policies can be used to control access to S3 buckets or EFS file systems, ensuring that users can only interact with specific files or directories.
+Set Up File Storage:
+
+Choose where your files will be stored: Amazon S3 (for object storage) or Amazon EFS (for file-based storage).
+Transfer Files:
+
+Once the server is set up and users are authenticated, they can start transferring files using the chosen protocol (SFTP, FTP, or FTPS).
+Monitor and Manage Transfers:
+
+Use AWS CloudWatch to monitor transfer activity, track metrics like bytes transferred, and set up alerts based on specific conditions (e.g., failed transfers).
+
+Automate with Lambda:
+
+Optionally, integrate AWS Lambda to trigger actions based on specific events, such as a file being uploaded to S3 or EFS.
+Pricing for AWS Transfer Family
+Pricing for AWS Transfer Family depends on several factors:
+
+Endpoint Hours:
+
+Charged per hour for each active endpoint that you configure (whether it’s SFTP, FTPS, or FTP).
+Data Transfer:
+
+There is a charge for the data transferred in and out of the service (data transfer to/from AWS services like S3 or EFS).
+Additional Costs:
+
+Costs associated with the underlying storage (e.g., S3 storage costs, EFS storage costs).
+Optional costs for additional services like AWS Lambda or CloudWatch Logs if you use them in your setup.
+Example Pricing:
+
+Server Hourly Pricing: Based on the protocol and the type of endpoint (e.g., $0.30 per hour for an SFTP endpoint).
+Data Transfer: Typically charged based on the volume of data transferred (e.g., $0.09 per GB for data transfer into AWS regions).
+For a detailed cost breakdown, you should refer to the AWS Transfer Family Pricing Page.
+
+Integration with Other AWS Services
+Amazon S3: Store transferred files in S3 for durability, availability, and scalability. You can also apply lifecycle policies to automatically archive or delete files.
+Amazon EFS: Store files in a scalable file system, which is useful for applications requiring file-based storage.
+IAM: Use AWS Identity and Access Management (IAM) for user authentication and fine-grained access control.
+AWS Lambda: Automate tasks based on file transfer events (e.g., triggering a Lambda function when a file is uploaded).
+AWS CloudTrail: Enable CloudTrail logging to track all API calls for auditing purposes.
+AWS CloudWatch: Monitor file transfer activities with CloudWatch metrics and logs.
+Example Use Case: Secure File Transfer for Data Analytics
+Scenario: A company needs to securely transfer large datasets from multiple partners into Amazon S3 for processing with Amazon Athena (for analytics).
+
+Solution:
+
+The company sets up an SFTP server using AWS Transfer Family.
+They create user accounts for each partner, granting them permissions to upload data to specific S3 buckets.
+As data is uploaded, an AWS Lambda function is triggered to process the files (e.g., validate the files, move them to appropriate directories, or start the Athena query).
+The company monitors the transfers via AWS CloudWatch for successful and failed uploads.
