@@ -1,0 +1,30 @@
+AWS - NatGateWay
+
+- NAT Gateway is a highly available AWS managed service that makes it easy to connect to the Internet 
+from instances within a private subnet in an Amazon Virtual Private Cloud (Amazon VPC). 
+Previously, you needed to launch a NAT instance to enable NAT for instances in a private subnet.
+
+#To config nat-gateway
+
+- Go to VPC
+- Go to NAT
+- Create NAT
+- Name
+- Subnet - Public-Sub
+- Allocate EIP
+- Create
+
+#Once Nat-GAteway is created.
+#It should be attached to the Pvt-RT
+
+- Go to RT
+- Select Pvt RT
+- Edit Routes
+- Add Route
+- Dest - 0.0.0.0/0
+- Target - Natgateway 
+- Save
+
+#Once this config is saved, our ec2 in Pvt Sub can download resources from WWW.
+#But, no one from WWW can communicate with Pvt-Ec2
+
