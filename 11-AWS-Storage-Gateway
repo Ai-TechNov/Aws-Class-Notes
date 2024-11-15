@@ -98,3 +98,129 @@ Storage consumption: Charges are based on the amount of data stored in the cloud
 Data transfer: Costs may also incur for data transfer from on-premises to the cloud and from one storage class to another.
 Virtual Tape and Volume Storage: For Tape and Volume Gateway, you are billed based on the amount of data stored in AWS.
 
+
+AWS Storage Gateway
+
+is a hybrid cloud storage service provided by Amazon Web Services (AWS). It allows you to seamlessly connect your on-premises environment with AWS cloud storage services like Amazon S3, Glacier, and EBS (Elastic Block Store). This integration enables you to extend your on-premises storage into the cloud while maintaining low-latency access to your data.
+
+Storage Gateway offers three types of gateways:
+
+File Gateway: This type of gateway enables you to store and retrieve objects in Amazon S3 using standard file protocols such as NFS (Network File System) and SMB (Server Message Block). It provides a file interface to Amazon S3, allowing you to store and retrieve objects directly from S3 buckets.
+
+Volume Gateway: It presents block storage volumes to your on-premises applications as iSCSI (Internet Small Computer System Interface) devices. There are two configurations within Volume Gateway:
+
+
+Tape Gateway: It provides a virtual tape infrastructure to store data in Amazon S3 and Glacier. Tape Gateway presents your backup application with a virtual tape library (VTL), allowing you to use your existing backup infrastructure with minimal changes. It's particularly useful for companies with existing tape-based backup solutions looking to transition to the cloud.
+
+AWS Storage Gateway integrates seamlessly with other AWS services, enabling you to leverage the scalability, durability, and security of the AWS cloud while maintaining compatibility with your existing on-premises applications and infrastructure.
+
+LAB
+
+- Go to AWS Storage gateway
+- create gateway
+- Name
+- Time - default
+- Gateway Option - S3 
+- Platform - Vmware
+- Download OVA file 
+
+#Once the file is downloaded you need to configure this on the local VM ware
+
+
+Download Virtual Box
+- https://www.virtualbox.org/
+
+- Open Virtual box
+- file
+- open - OVA file
+- Vm name 
+- Create Vm
+
+#Once the VM is created, add additional disk of 80gb to the Vm
+#Them start the VM
+- We need to login
+- username - admin
+- pswd - password 
+
+#Once the Vm is started, We need the Public ip address of the Vm to Configure with Storage gateway
+
+#Go back to storage gateway page
+- update ip address
+- Endpoint - public
+- Activate gateway
+- Configure gateway
+
+
+#Once the gateway is created, we need to create file share
+- create file-share
+- select gateway
+- Type - NFS
+- S3 - Select s3 bucket
+- create
+
+
+#Once the file-share is created, it will give the endpoint address to connect to our local-machine
+
+
+#Now, Open cmd prompt on the local machine\
+- Enter the mount address with drive 
+  Ex - mount -o nolock -o mtype=hard 192.168.42.196:/naresh-it-6pm E:
+#After it says connection is successfull
+
+Go to My Pc
+- Create Network connection
+- Select drive - E Drive
+- Update mount point - \\ip\bucket-name
+
+#Now, the s3 bucket will be directly connected to your local computer
+#We can start adding the data to the E drive and all the data will be directly updated to S3 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
