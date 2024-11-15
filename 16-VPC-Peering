@@ -1,0 +1,47 @@
+What is VPC peering?
+
+A VPC peering connection is a networking connection between two VPCs,
+that enables you to route traffic between them using private IPv4 addresses or IPv6 addresses. 
+Instances in either VPC can communicate with each other as if they are within the same network.
+
+# VPC-Peering is a two-way connection
+# Peering is like a friend request.
+# Once we send the peering request, other VPC has to accept the request. 
+# To Create VPC Peering
+
+- Go to VPC Page
+- Select VPC Peering
+- Create Peering connection
+- Name - Aja-Dell-Peering
+- Select Local Vpc 
+- Select another Vpc
+- Create 
+
+#You can accept or reject this peering connection request using the 'Actions' menu
+
+#To accept peering
+- Go to Actions
+- Accept request
+
+#This will activate peering connection.
+#To send and receive traffic across this VPC peering connection, you must add a route to the peered VPC in one or more of your VPC route tables.
+
+#To modify route tables
+- Go to RT
+- Select Aja-Pvt-Rt
+- Edit routes
+- Create Route
+- Dest - Dell-N/w CIDR
+- Target - Peering connection
+- Create 
+
+#To modify route tables
+- Go to RT
+- Select Dell-Pvt-Rt
+- Edit routes
+- Create Route
+- Dest - Aja-N/w CIDR
+- Target - Peering connection
+- Create 
+
+#Once the Peering is created and RT are updated, we can start sending and receiving data across both Pvt N/w's
