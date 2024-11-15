@@ -1,0 +1,54 @@
+A bastion host is a server that acts as a secure gateway to a private network from an external network, 
+such as the internet. It's designed to withstand cyberattacks and provide a secure entry point for remote access
+
+
+#LAuching 2 ec2 instances in 2 diff Pvt-Subnets
+
+- Launch 1st ec2 in Dell Pvt 
+- Launch 2nd ec2 in aja pvt
+
+#In order to connect to these Pvt Ec2, we need a bastion host or a Jump server.
+
+- A bastion host is a special computer that plays the role of a gatekeeper between a device and your private network. Due to potential blocking of internet traffic by the internal network and hosted services, SSH may be the only means to access these services.
+
+- Launch a Public ec2 in Aja Pub
+- Launch a Public ec2 in Dell Pub
+
+#Connect to Aja Pub ec2
+- ssh aja-pub
+
+#Copy the pem to the aja-pub ec2
+# Go to local win
+# Go to downloads
+- scp -i .\demo.pem .\demo.pem ec2-user@pub-ip:~
+
+#Once the pem file is copied
+#Modify permissions
+- chmod 400 pem-file
+
+#Now we can ssh into Pvt ec2
+- ssh aja-pvt 
+
+#The connection will got through
+
+#Now, repeat the similar process for Dell Ec2's 
+
+#Connect to Aja Pub ec2
+- ssh Dell-pub
+
+#Copy the pem to the Dell-pub ec2
+# Go to local win
+# Go to downloads
+- scp -i .\demo.pem .\demo.pem ec2-user@pub-ip:~
+
+#Once the pem file is copied
+#Modify permissions
+- chmod 400 pem-file
+
+#Now we can ssh into Pvt ec2
+- ssh Dell-pvt 
+
+#The connection will got through
+
+#Once we have established our Bastion Host.
+#Now, we need to configure the Peering between 2 Vpc's.
