@@ -1,0 +1,128 @@
+AWS Auto Scaling is a service that helps you automatically monitor and adjust the capacity 
+of your applications to maintain optimal performance and cost efficiency.
+It ensures that the number of compute resources (e.g., EC2 instances, ECS tasks, DynamoDB tables) scales up or down based on demand.
+
+Key Components of AWS Auto Scaling
+
+Scaling Plans:
+Define how and when your resources should scale.
+Scaling plans can be based on metrics (e.g., CPU utilization) or schedules (e.g., scale up at peak hours).
+
+Resources Supported:
+Amazon EC2 Instances: Scale the number of virtual machines.
+EC2 Spot Fleets: Automatically replace interrupted Spot Instances.
+ECS Tasks: Adjust the number of running tasks in an Amazon ECS service.
+DynamoDB Tables: Automatically manage throughput capacity.
+Aurora Read Replicas: Add or remove database replicas.
+
+Scaling Policies:
+Target Tracking Scaling: Adjusts capacity to maintain a specific metric, such as CPU utilization at 50%.
+Step Scaling: Scales in steps based on metric thresholds (e.g., increase by 2 instances if CPU > 70%).
+Scheduled Scaling: Scales based on a pre-set schedule (e.g., add capacity during business hours).
+Auto Scaling Groups (ASG):
+Logical group of EC2 instances that AWS Auto Scaling manages.
+Includes settings for minimum, maximum, and desired instance counts.
+
+Key Features of AWS Auto Scaling
+Dynamic Scaling:
+Automatically adjusts resource capacity based on demand patterns.
+Scheduled Scaling:
+Predefine scaling actions for specific times.
+Health Checks:
+Monitors the health of instances and replaces unhealthy ones.
+Integrated Metrics:
+Use CloudWatch metrics (e.g., CPU utilization, request latency) for scaling decisions.
+Predictive Scaling:
+Leverages machine learning to predict future demand and proactively scale resources.
+Cost Optimization:
+Ensures you only pay for resources you need by scaling down during periods of low demand.
+High Availability:
+Distributes resources across multiple Availability Zones for fault tolerance.
+
+To create an Auto Scaling Group (ASG) for the EC2 instances behind the Application Load Balancer (ALB),
+follow these steps. This ensures high availability and that the required number of instances are always running.
+
+Step 1: Create a Launch Template
+A Launch Template defines the instance configuration that the Auto Scaling Group will use.
+
+Navigate to EC2 Dashboard:
+
+Go to Launch Templates.
+Click Create Launch Template.
+Configure Launch Template:
+
+Name: Provide a name, e.g., WebServer-LaunchTemplate.
+AMI: Select the same AMI used for the existing instances (e.g., Amazon Linux 2).
+Instance Type: Choose the same type, e.g., t2.micro.
+Key Pair: Select an existing key pair or create a new one for SSH access.
+Network Settings:
+Leave network settings blank; the ASG will handle VPC and subnet selection.
+Storage: Configure EBS volume settings.
+
+User Data: Add a script to install and configure the web server automatically:
+
+bash
+
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "Hello from $(hostname)" > /var/www/html/index.html
+
+Security Group: Use the same security group as the existing instances, allowing HTTP (port 80) access.
+
+Create Launch Template:
+
+Review and click Create Launch Template.
+
+Step 2: Create an Auto Scaling Group
+Navigate to Auto Scaling Groups:
+
+In the EC2 Dashboard, click Auto Scaling Groups.
+Click Create Auto Scaling Group.
+Configure ASG Basics:
+
+Name: Provide a name, e.g., WebServer-ASG.
+Launch Template: Select the launch template created in Step 1.
+Select VPC and Subnets:
+
+Choose the same VPC as the existing instances.
+Select at least two subnets in different Availability Zones for high availability.
+Attach Load Balancer:
+
+Choose Attach to a new load balancer target group (or the existing target group from the previous setup).
+Select the Target Group associated with your ALB.
+Configure Desired Capacity:
+
+Desired Capacity: Set to 2 (to match the existing setup).
+Minimum Capacity: 1.
+Maximum Capacity: 3 (or higher, depending on expected traffic).
+Set Scaling Policies:
+
+Use Target Tracking Scaling:
+Metric: Average CPU Utilization.
+Target value: e.g., 50% (scale up or down based on CPU load).
+Optionally, configure Step Scaling Policies for finer-grained control.
+Add Notifications:
+
+Configure notifications to an SNS Topic to receive alerts about scaling events.
+Review and Create:
+
+Verify all configurations and click Create Auto Scaling Group.
+
+Step 3: Test the Setup
+Simulate Scaling:
+
+Reduce the ASG’s Desired Capacity to 1 and observe an instance terminating.
+Increase the Desired Capacity to 3 and observe new instances launching.
+Health Check:
+
+ASG will monitor instance health using the ELB health checks.
+Stop one instance to see if ASG launches a replacement.
+Load Balancer:
+
+Verify that new instances automatically register with the ALB and serve traffic.
+
+
+
