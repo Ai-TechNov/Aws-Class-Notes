@@ -1,0 +1,81 @@
+Amazon Simple Notification Service (SNS) is a fully managed messaging service that enables
+you to send notifications to distributed systems, applications, and users. 
+It supports publish/subscribe (pub/sub) messaging and direct-to-consumer notifications
+via multiple protocols like email, SMS, HTTP/S, mobile push, and more.
+
+Key Components of AWS SNS
+
+Topics:
+
+A topic is a communication channel to send messages.
+Publishers send messages to a topic, and subscribers receive those messages.
+Examples: "High-Priority-Alerts", "Order-Notifications".
+
+Subscribers:
+Entities (endpoints) that receive messages from a topic.
+
+Supported protocols include:
+Email (plain-text messages).
+SMS (text messages to mobile devices).
+HTTP/S (webhooks for custom applications).
+Amazon SQS (to queue messages).
+AWS Lambda (to trigger serverless functions).
+
+Publishers:
+Applications, AWS services, or devices that send messages to SNS topics.
+Examples: CloudWatch alarms, EC2 Auto Scaling notifications.
+
+Messages:
+A message contains data or notifications sent to subscribers.
+Supports message attributes to include metadata.
+Allows JSON-formatting for protocol-specific customization.
+
+To create an SNS Topic, add an email subscriber, and integrate it with CloudWatch Alarms, follow these steps:
+
+Step 1: Create an SNS Topic
+Go to the AWS Management Console and navigate to the SNS Dashboard.
+Click Topics in the left-hand menu.
+Click Create Topic.
+Configure the SNS Topic:
+Type: Standard.
+Name: Provide a descriptive name, e.g., ALB-EC2-Monitoring-Topic.
+Click Create Topic.
+
+Step 2: Add an Email Subscriber
+In the SNS Topic details page, click Create Subscription.
+Configure the subscription:
+Protocol: Email.
+Endpoint: Enter the email address where notifications will be sent (e.g., example@example.com).
+Click Create Subscription.
+Confirm the subscription:
+Check your email inbox for a message from AWS SNS.
+Click the confirmation link in the email.
+
+Step 3: Create a CloudWatch Alarm
+Go to the CloudWatch Dashboard > Alarms.
+Click Create Alarm.
+Configure the alarm:
+Step 1: Specify Metric:
+Choose a metric to monitor (e.g., UnHealthyHostCount for the ALB, CPUUtilization for EC2 instances).
+Step 2: Define Threshold:
+Set conditions that trigger the alarm (e.g., UnHealthyHostCount > 0 or CPUUtilization > 80%).
+Step 3: Configure Actions:
+Click Add Notification.
+Select your SNS Topic (ALB-EC2-Monitoring-Topic).
+Step 4: Add Name and Review:
+Provide a meaningful name for the alarm, e.g., ALB-Unhealthy-Host-Alarm.
+Click Create Alarm.
+
+Step 4: Test the Setup
+To test:
+Simulate an issue, such as stopping one EC2 instance to trigger an UnHealthyHostCount alarm.
+Alternatively, temporarily set the alarm threshold to match current metrics.
+Check your email to verify that the SNS notification is sent when the alarm is triggered.
+
+Step 5: Verify Subscription in the SNS Dashboard
+Go to SNS Dashboard > Topics > Select the Topic.
+Under Subscriptions, confirm the status is Confirmed.
+Ensure your email address is correct.
+
+
+
