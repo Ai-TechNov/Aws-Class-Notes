@@ -1,0 +1,121 @@
+AWS CloudWatch is a monitoring and observability service offered by Amazon Web Services (AWS).
+It enables you to collect, monitor, and manage data and metrics from AWS resources, applications,
+and services in real time. CloudWatch helps you gain insights into the operational performance, 
+resource utilization, and health of your infrastructure, and it allows you to respond to changes or issues proactively.
+
+Key Features of AWS CloudWatch
+
+Metric Collection:
+
+Collects metrics from AWS resources (e.g., EC2, RDS, Lambda, ALB) and custom applications.
+Examples of metrics include CPU utilization, memory usage, request count, and latency.
+
+Log Management:
+
+Stores, searches, and analyzes logs using CloudWatch Logs.
+Log sources can include EC2 system logs, Lambda logs, or custom application logs.
+
+Dashboards:
+Provides customizable, real-time dashboards for visualizing metrics.
+You can combine multiple metrics across AWS services into one view.
+
+Alarms:
+Set thresholds on metrics and trigger notifications or automated actions when thresholds are breached.
+Integrates with SNS for sending notifications via email, SMS, or other endpoints.
+
+Events:
+Use CloudWatch Events (now part of EventBridge) to respond to changes in your AWS environment.
+Automatically trigger actions such as invoking a Lambda function, sending an SNS notification, or starting an EC2 instance.
+
+ServiceLens:
+Provides distributed tracing and performance monitoring for applications using AWS X-Ray and CloudWatch metrics/logs.
+
+Application Insights:
+Detects and diagnoses issues in applications automatically using machine learning.
+
+Anomaly Detection:
+Uses machine learning to automatically identify abnormal metric behavior.
+
+Benefits of AWS CloudWatch
+
+Centralized Monitoring:
+Monitor all AWS resources and applications from one platform.
+Real-Time Insights:
+Enables near real-time tracking of metrics and logs to identify issues quickly.
+Automation:
+Automates responses to operational issues through alarms and events.
+Improved Performance:
+Helps optimize resource utilization and application performance.
+Cost Management:
+Tracks usage and billing metrics to control costs.
+Scalability:
+Designed to handle data from small to large-scale environments.
+
+
+
+
+To create a CloudWatch dashboard to monitor your Application Load Balancer (ALB) and the EC2 instances attached to it, follow these steps:
+
+Step 1: Navigate to CloudWatch
+
+Log in to the AWS Management Console.
+Open the CloudWatch Dashboard.
+On the left-hand menu, click Dashboards.
+Click Create Dashboard and provide a name (e.g., ALB-EC2-Monitoring).
+
+Step 2: Add Widgets to Monitor the Load Balancer
+
+2.1 Add ALB Metrics
+
+Click Add Widget and choose Line/Stacked Area/Number (depending on how you want to visualize the metrics).
+Select Configure Widget > Add Metric.
+Under Browse:
+Choose Load Balancer > Your ALB Name.
+Select relevant metrics like:
+RequestCount: Total requests served by the ALB.
+HTTPCode_Target_2XX_Count: Successful requests.
+HTTPCode_Target_4XX_Count: Client errors.
+HTTPCode_Target_5XX_Count: Server errors.
+TargetResponseTime: Average response time of targets.
+HealthyHostCount / UnHealthyHostCount: Healthy vs. unhealthy targets.
+Customize widget settings (e.g., visualization type, time range) and click Add to Dashboard.
+
+2.2 Add EC2 Metrics
+
+Click Add Widget and choose Line/Number/Stacked Area.
+Select Configure Widget > Add Metric.
+Under Browse:
+Navigate to EC2 > Per Instance Metrics.
+Choose metrics for each EC2 instance attached to the ALB:
+CPUUtilization: CPU usage percentage.
+NetworkIn/NetworkOut: Incoming and outgoing network traffic.
+DiskReadOps/DiskWriteOps: Disk I/O operations.
+StatusCheckFailed: Status checks indicating unhealthy instances.
+Add all selected metrics and customize their display.
+
+Step 3: Group and Organize Widgets
+
+Group widgets logically:
+ALB metrics at the top.
+EC2 instance metrics below.
+Rename widgets to meaningful titles like:
+"ALB Request Count and Response Time."
+"Instance 1 - CPU Utilization."
+"Instance 2 - Network Traffic."
+
+Step 4: Set Alarms for Key Metrics
+
+Go to CloudWatch Alarms > Create Alarm.
+Set alarms for important metrics, such as:
+UnhealthyHostCount > Threshold: 0 (send alerts if no healthy targets are available).
+HTTPCode_Target_5XX_Count > Threshold: 5 (detect high server errors).
+EC2 CPUUtilization > Threshold: 80% (alert on high CPU usage).
+Configure actions like sending notifications to an SNS Topic for email/SMS alerts.
+
+Step 5: Save and View Dashboard
+
+Save the dashboard.
+Monitor the metrics in real-time and use the dashboard for troubleshooting.
+Optionally, share the dashboard with your team by enabling access via the AWS console or embedding it in tools like AWS Systems Manager.
+
+
