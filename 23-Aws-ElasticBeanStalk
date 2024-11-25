@@ -1,0 +1,102 @@
+AWS Elastic Beanstalk is a Platform-as-a-Service (PaaS) solution offered by Amazon Web Services
+(AWS) that simplifies deploying, managing, and scaling web applications and services. 
+With Elastic Beanstalk, you can quickly deploy applications by uploading your code,
+and AWS takes care of the underlying infrastructure, such as servers, storage, load balancing, and auto-scaling.
+
+Elastic Beanstalk supports a variety of programming languages and frameworks, including Java, .NET, Node.js, Python, Ruby, PHP, and Go.
+
+
+Step 1: Prepare Your Application
+Create a Simple Web Application:
+Prepare an application, such as an HTML file, or a simple server-side app (e.g., Python Flask, Node.js, PHP, or Java).
+Example for a Python Flask app (application.py):
+python
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Hello from Elastic Beanstalk!"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+
+
+ZIP Your Application Files:
+
+Package your application code (e.g., application.py, requirements.txt, etc.) into a ZIP file for deployment.
+
+Step 2: Launch an Elastic Beanstalk Environment
+
+Go to Elastic Beanstalk Console:
+Navigate to Elastic Beanstalk in the AWS Management Console.
+Create a New Application:
+Click Create Application.
+Provide an Application Name (e.g., MyWebApp).
+(Optional) Add a description for your application.
+Create an Environment:
+Choose Web server environment.
+Platform:
+Select the appropriate platform for your application (e.g., Python, Node.js, etc.).
+Application Code:
+Select Upload your code.
+Upload the ZIP file created in Step 1.
+Configure Environment Settings:
+
+Instance Type:
+Set to a small instance type, such as t2.micro (for testing).
+
+Load Balancer:
+Elastic Beanstalk automatically creates an Application Load Balancer.
+
+Scaling:
+Set Minimum Instances to 2 and Maximum Instances to 4 (or more based on expected traffic).
+
+Key Pair:
+Attach an existing key pair for SSH access to EC2 instances.
+Create the Environment:
+Click Create Environment.
+Elastic Beanstalk provisions resources, including EC2 instances, Auto Scaling Groups, Target Groups, Load Balancer, and security groups.
+
+Step 3: Test the Deployment
+Once the environment is ready, Elastic Beanstalk provides a URL for the application.
+Example: http://<environment-name>.elasticbeanstalk.com.
+Open the URL in your browser to verify the application is running.
+
+Step 4: Configure Monitoring and Alerts
+Elastic Beanstalk Health Monitoring:
+Elastic Beanstalk continuously monitors environment health and displays it in the console.
+Navigate to the Health tab to view instance status, load balancer health, and request latency.
+Integrate CloudWatch Alarms:
+Elastic Beanstalk can automatically configure CloudWatch alarms for instance health and latency.
+Navigate to the Monitoring tab in the Beanstalk environment and enable alarms for key metrics.
+
+Step 5: Update the Application
+Modify your application code locally.
+Repackage the updated files into a ZIP file.
+Deploy the new version:
+In the Elastic Beanstalk console, go to your environment.
+Click Upload and Deploy under the Actions menu.
+Upload the updated ZIP file.
+
+Step 6: Optional - Custom Environment Configurations
+Custom EC2 Configurations:
+Use .ebextensions files for advanced configurations.
+Example: 00_setup.config to install additional packages:
+yaml
+Copy code
+packages:
+  yum:
+    httpd: []
+commands:
+  start_httpd:
+    command: "systemctl start httpd"
+
+
+Enable HTTPS:
+
+Add an SSL certificate to the load balancer via AWS Certificate Manager (ACM).
+Configure the Elastic Beanstalk environment to redirect HTTP to HTTPS.
+
+
