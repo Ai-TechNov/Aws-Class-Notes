@@ -1,0 +1,140 @@
+AWS Load Balancer
+An AWS Load Balancer is a service that automatically distributes incoming application traffic across multiple targets,
+such as EC2 instances, containers, IP addresses, or Lambda functions.
+It enhances the availability and fault tolerance of applications by ensuring traffic is distributed
+evenly and handling incoming requests even when some of the targets are unavailable.
+
+AWS offers three types of load balancers:
+
+Application Load Balancer (ALB):
+
+Operates at Layer 7 (Application Layer of the OSI model).
+Routes traffic based on content (e.g., URL path or HTTP headers).
+Ideal for web applications with microservices or container-based architectures.
+Supports advanced routing, SSL termination, and WebSocket.
+
+Network Load Balancer (NLB):
+
+Operates at Layer 4 (Transport Layer).
+Routes traffic based on IP address and port.
+Designed for high-performance and low-latency workloads.
+Suitable for applications requiring TCP, UDP, or TLS connections.
+
+Gateway Load Balancer (GWLB):
+
+Designed to deploy and manage third-party virtual appliances.
+Combines the functions of a load balancer and a network gateway.
+
+
+Target Groups
+A Target Group in AWS is a logical grouping of resources (called targets) that the load balancer routes traffic to. Targets can be EC2 instances, IP addresses, Lambda functions, or even other services. Each load balancer must be associated with one or more target groups.
+
+Key Concepts of Target Groups:
+
+Target Types:
+
+Instance: Targets are EC2 instances identified by instance IDs.
+IP: Targets are IP addresses.
+Lambda: Targets are AWS Lambda functions.
+Health Checks:Target groups perform health checks to determine whether the targets are healthy and can handle requests.
+Configurable parameters include protocol, port, path, and thresholds for success.
+Routing Rules:
+
+Traffic is routed to targets based on rules defined in the load balancer listener.
+You can define listener rules that map specific traffic patterns (e.g., HTTP path /api) to specific target groups.
+Weighting:
+
+With ALBs, targets in a group can be assigned weights to control how much traffic each target receives.
+How Load Balancer and Target Groups Work Together
+
+Listener:
+
+The load balancer listens for incoming traffic on specified ports and protocols.
+The listener has rules to forward traffic to appropriate target groups.
+
+Traffic Distribution:
+
+The load balancer uses algorithms (e.g., round-robin for ALB or flow hash for NLB) to distribute requests to healthy targets within the target group.
+Health Monitoring:
+
+Targets are continuously monitored using health checks, and unhealthy targets are excluded from traffic routing.
+
+Scaling:
+
+Integration with Auto Scaling Groups allows the number of targets to dynamically increase or decrease based on load.
+Example Use Case: Hosting a Web Application
+
+Load Balancer:
+An Application Load Balancer handles incoming HTTP/S requests.
+
+Target Group:
+A target group consists of multiple EC2 instances running the web server.
+
+Health Checks:
+Configured to check the /health endpoint of the web server to ensure the instances are available.
+
+Routing:
+Requests to /api are routed to one target group, while requests to /static are routed to another.
+
+Step 1: Launch EC2 Instances
+
+Login to AWS Management Console.
+Navigate to EC2 Dashboard.
+Launch two EC2 instances:
+Use the same Amazon Machine Image (AMI) (e.g., Amazon Linux 2).
+Select the same instance type (e.g., t2.micro).
+Attach the same security group allowing traffic on port 80 (HTTP).
+Ensure both instances are in the same VPC and availability zone (or different zones if desired for high availability).
+Install and configure a web server on each instance:
+SSH into each EC2 instance.
+Install a web server (e.g., Apache or Nginx).
+Add a simple web page to distinguish between instances, e.g.,:
+
+bash
+
+echo "Instance 1" > /var/www/html/index.html  # Modify for Instance 1
+echo "Instance 2" > /var/www/html/index.html  # Modify for Instance 2
+
+
+
+Step 2: Create a Target Group
+
+Navigate to EC2 Dashboard > Target Groups.
+Click Create Target Group.
+Configure the target group:
+Choose Target Type: Instance.
+Protocol: HTTP.
+Port: 80.
+VPC: Select the same VPC as your EC2 instances.
+Configure health checks:
+Protocol: HTTP.
+Path: / (or /health if you have a specific health endpoint).
+Adjust thresholds if necessary.
+Register targets:
+Select the two EC2 instances.
+Ensure the target port is set to 80.
+Save the target group.
+
+Step 3: Create an Application Load Balancer
+
+Navigate to EC2 Dashboard > Load Balancers.
+Click Create Load Balancer > Application Load Balancer.
+Configure the ALB:
+Name: Give a unique name to your ALB.
+Scheme: Internet-facing (for public access) or internal (for private traffic).
+IP Address Type: IPv4 (or dual-stack for IPv6).
+Listeners: Add an HTTP listener on port 80.
+Availability Zones: Select subnets from at least two availability zones.
+Configure the security group for the ALB:
+Allow inbound traffic on port 80 (HTTP).
+Map the ALB to the target group:
+Add a listener rule forwarding traffic to the target group created in Step 2.
+
+Step 4: Test the Setup
+
+After the ALB is created, note its DNS name (available in the ALB dashboard).
+
+Open the DNS name in your browser:
+The ALB should distribute traffic to the two EC2 instances.
+Refresh the browser to see traffic routed alternately to the two instances (if using round-robin routing).
+
